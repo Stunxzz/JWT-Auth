@@ -23,7 +23,7 @@ from accounts.views import RefreshTokenView
 
 urlpatterns = [
     path('api/accounts/', include('accounts.urls')),
-    path('api/token/refresh/', RefreshTokenView.as_view())
+    path("api/", include("auctions.urls")),
     # path('admin/', admin.site.urls),
 ]
 if settings.DEBUG:

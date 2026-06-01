@@ -14,8 +14,11 @@ def place_bid(auction_id, bidder, amount):
             raise ValidationError("This auction is not active")
         now = timezone.now()
         if now < auction.start_time:
+
             raise ValidationError("This auction has not started yet.")
+
         if now >= auction.end_time:
+            print(now, auction.start_time)
             raise ValidationError("This auction has already ended.")
         if auction.seller_id == bidder.id:
             raise PermissionDenied("You cannot bid on your own auction.")

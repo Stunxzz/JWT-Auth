@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import Auction, Bid
-
+from django.utils import timezone
 
 class BidSerializer(serializers.ModelSerializer):
     bidder_name = serializers.CharField(source="bidder.get_full_name", read_only=True)
@@ -29,6 +29,8 @@ class AuctionSerializer(serializers.ModelSerializer):
         read_only_fields = ("current_price", "status", "winner")
 
     def create(self, validated_data):
-        validated_data["current_price"] = self.validated_data["starting_price"]
+        validated_data["current_price"] = validated_data["starting_price"]
         validated_data["seller"] = self.context["request"].user
+        if validated_data["start_time"] <= timezone.now():
+            validated_data["status"] = Auction.Status.ACTIVE
         return super().create(validated_data)

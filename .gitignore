@@ -48,3 +48,4 @@ dist-ssr
 
 # Ignore docs directories
 **/conspects
+backend/media

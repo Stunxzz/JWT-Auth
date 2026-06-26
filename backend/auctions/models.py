@@ -52,3 +52,22 @@ class Bid(models.Model):
 
     def __str__(self):
         return f"{self.bidder} → {self.amount} on {self.auction.title}"
+
+
+class AuctionImage(models.Model):
+    auction = models.ForeignKey(
+        Auction,
+        on_delete=models.CASCADE,
+        related_name='images'
+    )
+    image = models.ImageField(upload_to='auctions/')
+    is_primary = models.BooleanField(default=False)
+    order = models.PositiveIntegerField(default=0)
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = 'auction_image'
+        ordering = ['order', 'uploaded_at']
+
+    def __str__(self):
+        return f"Image for {self.auction.title}"

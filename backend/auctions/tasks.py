@@ -3,16 +3,25 @@ from django.utils import timezone
 from django.core.mail import send_mail
 from django.conf import settings
 
+from auctions.models import Auction
 
 
 @shared_task
 def close_expired_auctions():
-    from .models import Auction
     now = timezone.now()
+
+    # Активирай аукциони чийто start_time е минал
+    Auction.objects.filter(
+        status=Auction.Status.DRAFT,
+        start_time__lte=now
+    ).update(status=Auction.Status.ACTIVE)
+
+    # Затвори изтеклите active аукциони
     expired = Auction.objects.filter(
         status=Auction.Status.ACTIVE,
-        end_time__lte=now,
+        end_time__lt=now
     )
+
     for auction in expired:
         top_bid = auction.bids.order_by('-amount').first()
         auction.status = Auction.Status.ENDED

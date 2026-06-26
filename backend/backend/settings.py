@@ -109,11 +109,11 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Sofia'
+USE_TZ = True
 
 USE_I18N = True
 
-USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
@@ -152,14 +152,3 @@ CSRF_COOKIE_SAMESITE = "Lax"
 AUTH_USER_MODEL = 'accounts.AppUser'
 
 # Celery
-CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL', 'redis://localhost:6379/0')
-CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND', 'redis://localhost:6379/0')
-CELERY_TIMEZONE = 'UTC'
-CELERY_TASK_TRACK_STARTED = True
-
-CELERY_BEAT_SCHEDULE = {
-    'close-expired-auctions': {
-        'task': 'auctions.tasks.close_expired_auctions',
-        'schedule': crontab(minute='*/1'),
-    },
-}

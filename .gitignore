@@ -37,7 +37,7 @@ dist-ssr
 
 # Ignore env variables
 **/.env
-
+**/.env.docker
 # Ignore credentials
 **/service_account.json
 

@@ -24,6 +24,7 @@ from accounts.views import RefreshTokenView
 urlpatterns = [
     path('api/accounts/', include('accounts.urls')),
     path("api/", include("auctions.urls")),
+    path('api/notifications/', include('notifications.urls')),
     # path('admin/', admin.site.urls),
 ]
 if settings.DEBUG:

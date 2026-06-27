@@ -1,5 +1,6 @@
 import axios from 'axios';
 const VITE_URL = import.meta.env.VITE_API_URL;
+console.log(import.meta.env.VITE_API_URL)
 
 const api = axios.create({
     baseURL: VITE_URL,
@@ -14,12 +15,14 @@ api.interceptors.response.use(
         if (
             error.response?.status === 401 &&
             !original._retry &&
-            !original.url.includes('token/refresh') &&
-            !original.url.includes('accounts/me')
+            !original.url.includes('accounts/token/refresh') &&
+            !original.url.includes('accounts/me') &&
+            !original.url.includes('accounts/login') &&
+            !original.url.includes('accounts/register')
         ) {
             original._retry = true;
             try {
-                await axios.post(`${VITE_URL}token/refresh/`, {}, {
+                await axios.post(`${VITE_URL}accounts/token/refresh/`, {}, {
                     withCredentials: true,
                 });
                 return api(original);

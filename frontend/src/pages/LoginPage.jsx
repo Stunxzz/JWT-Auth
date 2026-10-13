@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
-
+console.log(import.meta.env.VITE_API_URL)
 const LoginPage = () => {
     const { login } = useAuth();
     const navigate = useNavigate();

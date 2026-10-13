@@ -8,29 +8,19 @@ export const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-    const fetchUser = async () => {
-        try {
-            const res = await api.get('accounts/me/');
-            setUser(res.data);
-        } catch (err) {
-            if (err.response?.status === 401) {
-                // опитай да refresh-неш и пробвай пак
-                try {
-                    await api.post('token/refresh/');
-                    const res = await api.get('accounts/me/');
-                    setUser(res.data);
-                } catch {
-                    setUser(null);
-                }
-            } else {
+        const fetchUser = async () => {
+            try {
+                const res = await api.get('accounts/me/');
+                setUser(res.data);
+            } catch {
                 setUser(null);
+            } finally {
+                setLoading(false);
             }
-        } finally {
-            setLoading(false);
-        }
-    };
-    fetchUser();
-}, []);
+        };
+        fetchUser();
+    }, []);
+
     const register = async (formData) => {
         const res = await api.post('accounts/register/', formData);
         setUser(res.data);
@@ -52,6 +42,5 @@ export const AuthProvider = ({ children }) => {
         </AuthContext.Provider>
     );
 };
-
 
 export const useAuth = () => useContext(AuthContext);
